@@ -1,0 +1,32 @@
+program Project1;
+
+{$APPTYPE CONSOLE}
+
+uses
+  SysUtils;
+var
+a,a1: byte;
+b,b1:smallint;
+c,c1: longint;
+
+begin
+read(a,b,c);
+
+asm
+MOV AH,a
+MOV BX,b
+MOV EDX,c
+
+MOV a1, AH
+MOV b1, BX
+MOV c1, EDX
+end;
+
+writeln(' ');
+
+writeln(a1);
+writeln(b1);
+writeln(c1);
+
+readln; readln;
+end.
