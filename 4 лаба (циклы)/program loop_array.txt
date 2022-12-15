@@ -3,69 +3,67 @@ program loop_array;
 {$ASMMODE INTEL}
 
 var
-i,n,sum,a,f,s:integer;
+i,n,sum,a,f,s:shortint;
 mas: array[1..100] of integer;
 
 begin
-readln(n);
+  readln(n);
 
-//setlength(mas,n);
+  //setlength(mas,n);
 
-for i:=1 to n do
-  begin
+  for i:=1 to n do
+    begin
     read(a);
     mas[i]:=a;
-  end;    
-  
+    end;
+
   f:=5;
   s:=7;
   sum:=0;
-  
-//  for i:=0 to n do
-//  begin
-//    write(mas[i],' ');
-//  end;  
+
+// for i:=0 to n do
+// begin
+// write(mas[i],' ');
+// end;
 
   asm
-  
-@_start:
-  
-  mov ebx,0
 
-@for_start:
+    @_start:
+
+    mov ebx,0
+
+    @for_start:
     lea edi, [mas + ebx * 2]
 
-    mov eax, [edi]            // добавляем элемент массива i в eax
-    mov edx,0
+    mov ax, [edi] // добавляем элемент массива i в ax
+  
 
-    div f                    //делим eax на  5
-   
-    cmp edx, 0              //сраниваем остаток с 0
-    jne @end_if             //если число не делится на 5, то смотрим следующий элемент
-                            // иначе проверяем делится ли число на 7
-          
-    mov eax, [edi]          //eax снова равно значению элемента массива
-       
-    div s                   // делим на 7
-    cmp edx, 0              // сраниваем остаток
-    je @end_else            // если равен 0, то смотрим следующий элемент
+    idiv f //делим eax на 5
 
-    mov eax,[edi]           // eax = mas[i]
-    add sum, eax            //sum += eax
-    
-    @end_else:  
-    @end_if: 
-    
-    inc ebx               // i + 1
-    cmp ebx, n            // i ==? n
+    cmp ah, 0  //сраниваем остаток с 0
+    jne @end_if //если число не делится на 5, то смотрим следующий элемент
+                // иначе проверяем делится ли число на 7
+
+    mov ax, [edi] //eax снова равно значению элемента массива
+
+    idiv s // делим на 7
+    cmp ah, 0 // сраниваем остаток 
+    je @end_if // если равен 0, то смотрим следующий элемент
+
+    mov ax,[edi] // ax = mas[i]
+    add sum, ax //sum += ax
+
+    @end_if:
+
+
+    inc ebx // i + 1
+    cmp ebx, n // i ==? n
     jnz @for_start
 
-  end;
+end;
 
 
- writeln('sum = ', sum);
+writeln('sum = ', sum);
 
-  readln;
+readln;
 end.
-
-
